@@ -7,7 +7,6 @@ const dataSource = path.join(rootDir, 'data', 'products.json');
 
 const getProductsFromFile = (cb) => {
     fs.readFile(dataSource, (err, fileContent) => {
-
         if(err) {
             cb([]);
         } else {
@@ -17,8 +16,11 @@ const getProductsFromFile = (cb) => {
 }
 
 module.exports = class Product {
-    constructor(t) {
-        this.Title = t;
+    constructor(title, imageUrl, description, price) {
+        this.Title = title,
+        this.ImageUrl = imageUrl,
+        this.Description = description,
+        this.Price = price
     }
 
     save() {
@@ -29,14 +31,16 @@ module.exports = class Product {
                 console.log(err);
             })
         })
-        fs.readFile(dataSource, (err, fileContent) => {
-            
-
-            
-        })
     }
 
     static fetchAll(cb) {
         getProductsFromFile(cb);
+    }
+
+    static findById(id, cb) {
+        getProductsFromFile(products => {
+            const product = products.find(p => p.Id === id);
+            cb(product);
+        })
     }
 }
